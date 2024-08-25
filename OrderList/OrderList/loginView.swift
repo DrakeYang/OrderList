@@ -8,8 +8,12 @@
 import Foundation
 import UIKit
 
+protocol LoginProtocol {
+    func showOrderListVC(mainVC:UIViewController)
+}
 
 class LoginView: UIView {
+    var mainVC:UIViewController? = nil
 
     let usernameTextField: UITextField = {
         let textField = UITextField()
@@ -32,7 +36,7 @@ class LoginView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("Login", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(LoginView.self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(loginButtonTapped), for: .touchUpInside)
         return button
     }()
 
@@ -55,15 +59,16 @@ class LoginView: UIView {
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20)
         ])
     }
-
+    
     @objc func loginButtonTapped() {
-        guard let username = usernameTextField.text, !username.isEmpty,
-              let password = passwordTextField.text, !password.isEmpty else {
-            print("Username and password must not be empty")
-            return
-        }
-
-        // Perform login action
-        print("Logging in with username: \(username) and password: \(password)")
+//        guard let username = usernameTextField.text, !username.isEmpty,
+//              let password = passwordTextField.text, !password.isEmpty else {
+//            print("Username and password must not be empty")
+//            return
+//        }
+        // 지금은 무조껀 로그인 통과
+        let orderListVC = OrderListVC()
+        orderListVC.modalPresentationStyle = .fullScreen
+        mainVC?.present(orderListVC, animated: true)
     }
 }

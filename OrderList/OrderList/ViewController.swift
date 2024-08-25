@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     
     func loadLoginView(){
         let loginView = LoginView()
+        loginView.mainVC = self
         self.view.addSubview(loginView)
         loginView.setupLayout()
         loginView.snp.makeConstraints { (make) -> Void in
