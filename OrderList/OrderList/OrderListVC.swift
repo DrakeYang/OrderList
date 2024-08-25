@@ -8,15 +8,24 @@
 import Foundation
 import UIKit
 
+
 class OrderListVC: UIViewController {
+    //  MARK: IBOultet
+    @IBOutlet var titleView : UIView!
+    @IBOutlet var listView : UITableView!
+    var orderDataList : [OrderData] = []
+    
     override func viewDidLoad() {
         self.makeTitleView()
         self.view.backgroundColor = .white
+        self.makeOrderData()
+        self.makeListView()
     }
     
     // 상단뷰 만들기
     func makeTitleView(){
         let titleView = UIView()
+        self.titleView = titleView
         self.view.addSubview(titleView)
         titleView.backgroundColor = .blue
         titleView.snp.makeConstraints { (make) -> Void in
@@ -33,4 +42,74 @@ class OrderListVC: UIViewController {
             make.center.equalTo(titleView)
         }
     }
+    
+//    리스트 뷰 생성
+    func makeListView(){
+        let listView = UITableView()
+        self.listView = listView
+        self.view.addSubview(listView)
+        listView.snp.makeConstraints { make in
+            make.top.equalTo(self.titleView.snp.bottom)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.width.equalTo(self.titleView)
+        }
+        listView.register(OrderListCell.self, forCellReuseIdentifier: "OrderListCell")
+        listView.delegate = self
+        listView.dataSource = self
+    }
+    
+    // 주문 데이터 추가
+    func makeOrderData(){
+        for i in 0...19{
+            let newOrder = OrderData(date: i.description, title: i.description+"일차 주문")
+            self.orderDataList.append(newOrder)
+        }
+    }
+    
+    // end of VC
+}
+
+
+class OrderListCell: UITableViewCell {
+    let dateLabel = UILabel()
+    let titleLabel = UILabel()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        addSubview(dateLabel)
+        dateLabel.snp.makeConstraints { make in
+            make.top.left.height.equalTo(self)
+            make.width.equalTo(80)
+        }
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.right.height.equalTo(self)
+            make.left.equalTo(dateLabel.snp.right)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension OrderListVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.orderDataList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: "OrderListCell", for: indexPath) as! OrderListCell
+                
+        let currentOrderData = self.orderDataList[indexPath.row]
+        cell.dateLabel.text = currentOrderData.date
+        cell.titleLabel.text = currentOrderData.title
+        return cell
+    }
+}
+
+struct OrderData {
+    var date : String
+    var title : String
 }
