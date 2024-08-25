@@ -13,6 +13,7 @@ class OrderListVC: UIViewController {
     //  MARK: IBOultet
     @IBOutlet var titleView : UIView!
     @IBOutlet var listView : UITableView!
+    @IBOutlet var logoutButton : UIButton!
     var orderDataList : [OrderData] = []
     
     override func viewDidLoad() {
@@ -20,6 +21,7 @@ class OrderListVC: UIViewController {
         self.view.backgroundColor = .white
         self.makeOrderData()
         self.makeListView()
+        self.makeLogoutButton()
     }
     
     // 상단뷰 만들기
@@ -64,6 +66,26 @@ class OrderListVC: UIViewController {
             let newOrder = OrderData(date: i.description, title: i.description+"일차 주문")
             self.orderDataList.append(newOrder)
         }
+    }
+    // 로그아웃 기능추가
+    func makeLogoutButton(){
+        let logoutButton = UIButton()
+        self.logoutButton = logoutButton
+        self.titleView.addSubview(logoutButton)
+        logoutButton.snp.makeConstraints { make in
+            make.top.equalTo(self.titleView).offset(5)
+            make.right.equalTo(self.titleView).offset(-5)
+            make.height.equalTo(40)
+            make.width.equalTo(80)
+        }
+        logoutButton.backgroundColor = .black
+        logoutButton.setTitle("로그아웃", for: .normal)
+        logoutButton.addTarget(nil, action: #selector(logout), for: .touchUpInside)
+    }
+    // 로그아웃 기능
+    @objc func logout(){
+        self.dismiss(animated: true)
+        // 보통 여기서 로그인 정보 삭제
     }
     
     // end of VC
