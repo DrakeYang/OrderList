@@ -24,5 +24,13 @@ class OrderListVC: UIViewController {
             make.width.equalTo(self.view)
             make.top.equalTo(self.view.safeAreaLayoutGuide)
         }
+        
+        let title = UILabel()
+        title.text = "주문목록"
+        title.font = title.font.withSize(20)
+        titleView.addSubview(title)
+        title.snp.makeConstraints { make in
+            make.center.equalTo(titleView)
+        }
     }
 }
